@@ -17,30 +17,49 @@ void loop(){
   int rightBoobSqueeze = analogRead(rightBoob); 
 
   long start = millis();
-  long pussySqueeze =  cs_4_2.capacitiveSensor(30);
+  long pussyStroke =  cs_4_2.capacitiveSensor(30);
 
-  if(leftBoobSqueeze > 0 || rightBoobSqueeze > 0) {
-    if(leftBoobSqueeze >= rightBoobSqueeze) {
-      Serial.print("left boob squeeze intensity: ");
-      Serial.println(leftBoobSqueeze);
-    }
-
-    else if(leftBoobSqueeze <= rightBoobSqueeze) {
-      Serial.print("right boob squeeze intensity: ");
-      Serial.println(rightBoobSqueeze);
-    }
+  // if both boobs and vagina are touched:
+  if(pussyStroke > 30 && leftBoobSqueeze > 0 && rightBoobSqueeze > 0) {
+    Serial.println("light up all LEDs and move all servos at once");
+  }
+  
+  // if nothing is touched
+  else if (pussyStroke <= 30 && leftBoobSqueeze == 0 && rightBoobSqueeze == 0) {
+    Serial.println("NOTHING");
   }
 
-  if(pussySqueeze > 30) {
-    Serial.print("pussy squeeze intensity: ");
-    Serial.println(pussySqueeze);
-  }
-
-  if(pussySqueeze > 30 && leftBoobSqueeze > 0 && rightBoobSqueeze > 0) {
-    Serial.print("light up all LEDs and move all servos at once");
+  // else if 1-2 of them are touched:
+  else {
+    // logic for the boobs:
+    if(leftBoobSqueeze > 0 || rightBoobSqueeze > 0) {
+      // if only left boob is squeezed:
+      if(leftBoobSqueeze > 0 && rightBoobSqueeze == 0) {
+        Serial.print("left boob squeeze intensity: ");
+        Serial.println(leftBoobSqueeze);
+      }
+      // if only right boob is squeezed:
+      else if(rightBoobSqueeze > 0 && leftBoobSqueeze == 0) {
+        Serial.print("right boob squeeze intensity: ");
+        Serial.println(rightBoobSqueeze);
+      }
+      // if both boobs are squeezed:
+      else if(rightBoobSqueeze > 0 && leftBoobSqueeze > 0) {
+        Serial.println("right and left boobs squeezed");
+      }
+    }
+    // logic for the vagina:
+    if(pussyStroke > 30) {
+      Serial.print("pussy stroke intensity: ");
+      Serial.println(pussyStroke);
+    }
   }
 
   delay(250); //just here to slow down the output for easier reading
 }
+
+
+
+
 
 
