@@ -3,7 +3,7 @@
 int FSR_Pin = A0; //analog pin 0
 
 void setup(){
-  Serial.begin(19200);
+  Serial.begin(9600);
 }
 
 void loop(){
